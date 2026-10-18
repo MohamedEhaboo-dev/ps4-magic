@@ -3,30 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HIMA STORE - AUTO</title>
+<title>HIMA STORE - 13.52 DETECT</title>
 <style>
-body{background:#020713;color:#fff;text-align:center;font-family:Tahoma;padding-top:80px}
-#status{margin:30px auto;padding:20px;max-width:400px;background:#06172a;border:1px solid #08aaff;border-radius:15px;font-size:22px}
+body{background:#020713;color:#fff;text-align:center;font-family:Tahoma;padding-top:60px}
+#status{margin:30px auto;padding:20px;max-width:450px;background:#06172a;border:1px solid #08aaff;border-radius:15px;font-size:22px;line-height:1.8}
 #splash{position:fixed;inset:0;background:#000;z-index:999999;display:flex;align-items:center;justify-content:center}
 #splash img{width:100%;height:100%;object-fit:contain}
+.badge{padding:5px 12px;border-radius:8px;font-weight:bold}
+.ok{background:#00c853;color:#000}
+.no{background:#ff1744}
 </style>
 </head>
 <body>
 
-<div id="splash"><img src="hima_store_transparent.png"></div>
+<div id="splash"><img src="36232974-D9AB-4479-99BD-912B9CD5122E.jpeg"></div>
 
-<div id="status">جاري كشف السوفت وتشغيل التعديلة...</div>
+<div id="status">جاري كشف السوفت...</div>
 
 <script>
-const ua = navigator.userAgent;
-let fw = "1202";
-const m = ua.match(/PlayStation 4.*?(\d+\.\d+)/) || ua.match(/(\d+\.\d+)/);
-if(m){ fw = m[1].replace('.',''); }
-document.getElementById('status').innerHTML = `تم كشف سوفت ${fw} <br><br> جاري تحميل الكاش...`;
+function getFW(){
+  const ua = navigator.userAgent;
+  // بيدور على رقم السوفت من 5.05 لحد 13.52
+  let match = ua.match(/PlayStation 4.*?(\d+\.\d+)/);
+  if(!match) match = ua.match(/(\d+\.\d+)/);
+  if(match) return match[1];
+  return "غير معروف";
+}
 
+const fwText = getFW();
+const fwNum = parseFloat(fwText);
+
+let html = `السوفت الحالي: <b style="font-size:28px;color:#00e5ff">${fwText}</b><br><br>`;
+
+if(!isNaN(fwNum)){
+  if(fwNum <= 13.52){
+    html += `<span class="badge ok">✅ مدعوم لحد 13.52</span><br><br>جاري تحميل الكاش...`;
+  } else {
+    html += `<span class="badge no">❌ سوفت ${fwText} أعلى من 13.52</span><br>غير مدعوم حاليا`;
+  }
+} else {
+  html += `افتح الصفحة من متصفح الـ PS4`;
+}
+
+document.getElementById('status').innerHTML = html;
+
+// يخفي اللوجو بعد 15 ثانية
 setTimeout(()=>{
   document.getElementById('splash').style.display='none';
-  document.getElementById('status').innerHTML += `<br>✅ تم تحميل الكاش`;
 },15000);
 </script>
 
