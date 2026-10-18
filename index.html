@@ -1,24 +1,52 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAGIC STORE - By Mohamed Ehab</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAGIC STORE - Auto Detect</title>
 <style>
-body { background:#0f0f0f; color:white; font-family: Arial; text-align:center; padding-top:50px; }
-h1 { color:#f5c518; font-size:40px; }
-.btn { display:block; margin:15px auto; padding:15px; width:250px; background:#222; border:1px solid #f5c518; color:white; text-decoration:none; border-radius:10px; font-size:20px; }
-.btn:hover { background:#f5c518; color:black; }
+body{background:#020713;color:#fff;font-family:Arial;text-align:center;padding:20px}
+h1{color:#08aaff;font-size:36px;margin-top:40px}
+#fw{color:#f5c518;font-size:22px;margin:20px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:600px;margin:30px auto}
+a.card{background:#06172a;border:1px solid #12365a;padding:15px;border-radius:12px;color:#fff;text-decoration:none;font-weight:bold}
+a.card.active{border-color:#08aaff;background:#0a2a4a;box-shadow:0 0 15px #08aaff}
 </style>
 </head>
 <body>
-<h1>MAGIC STORE</h1>
-<p>By Mohamed Ehab - MohamedPS4</p>
-<br>
-<a class="btn" href="src/900/index.html">PS4 9.00</a>
-<a class="btn" href="src/1352/jb.html">PS4 13.52</a>
-<a class="btn" href="src/1200/index.html">PS4 12.00</a>
-<br>
-<p>جاري تجهيز باقي السوفتات...</p>
+<h1>🔮 MAGIC STORE</h1>
+<div id="fw">جاري كشف إصدار النظام...</div>
+<div class="grid" id="list"></div>
+
+<script>
+const versions=["900","960","1000","1001","1050","1070","1100","1200","1202"];
+const list=document.getElementById('list');
+const fwDiv=document.getElementById('fw');
+
+versions.forEach(v=>{
+  let a=document.createElement('a');
+  a.className='card';
+  a.id='v'+v;
+  a.href='src/'+v+'/index.html';
+  a.innerHTML=v.slice(0,2)+'.'+v.slice(2);
+  list.appendChild(a);
+});
+
+// كشف سوفت البلايستيشن
+let ua=navigator.userAgent;
+let m=ua.match(/PlayStation 4\/([0-9.]+)/) || ua.match(/([0-9]\.[0-9]+)/);
+if(m){
+  let ver=m[1].replace('.','');
+  if(ver.length==3) ver+='0';
+  fwDiv.innerHTML='إصدارك الحالي: <b>'+m[1]+'</b>';
+  let el=document.getElementById('v'+ver);
+  if(el){
+    el.classList.add('active');
+    setTimeout(()=>{window.location.href=el.href},1500);
+  }
+} else {
+  fwDiv.innerHTML='افتح هذا الرابط من متصفح البلايستيشن';
+}
+</script>
 </body>
 </html>
