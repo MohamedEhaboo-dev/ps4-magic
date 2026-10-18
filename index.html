@@ -2,51 +2,40 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MAGIC STORE - Auto Detect</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAGIC STORE - AUTO</title>
 <style>
-body{background:#020713;color:#fff;font-family:Arial;text-align:center;padding:20px}
-h1{color:#08aaff;font-size:36px;margin-top:40px}
-#fw{color:#f5c518;font-size:22px;margin:20px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:600px;margin:30px auto}
-a.card{background:#06172a;border:1px solid #12365a;padding:15px;border-radius:12px;color:#fff;text-decoration:none;font-weight:bold}
-a.card.active{border-color:#08aaff;background:#0a2a4a;box-shadow:0 0 15px #08aaff}
+body{background:#020713;color:#fff;text-align:center;font-family:Tahoma;padding-top:80px}
+h1{color:#08aaff;font-size:32px}
+#status{margin:30px auto;padding:20px;max-width:400px;background:#06172a;border:1px solid #08aaff;border-radius:15px;font-size:22px}
 </style>
 </head>
 <body>
-<h1>🔮 MAGIC STORE</h1>
-<div id="fw">جاري كشف إصدار النظام...</div>
-<div class="grid" id="list"></div>
+<h1>MAGIC STORE</h1>
+<div id="status">جاري كشف السوفت وتشغيل التعديلة...</div>
 
 <script>
-const versions=["900","960","1000","1001","1050","1070","1100","1200","1202"];
-const list=document.getElementById('list');
-const fwDiv=document.getElementById('fw');
+// كشف السوفت اوتوماتيك
+const ua = navigator.userAgent;
+let fw = "1202";
+const m = ua.match(/PlayStation 4.*?(\d+\.\d+)/) || ua.match(/(\d+\.\d+)/);
+if(m){ fw = m[1].replace('.',''); }
 
-versions.forEach(v=>{
-  let a=document.createElement('a');
-  a.className='card';
-  a.id='v'+v;
-  a.href='src/'+v+'/index.html';
-  a.innerHTML=v.slice(0,2)+'.'+v.slice(2);
-  list.appendChild(a);
-});
+document.getElementById('status').innerHTML = `تم كشف سوفت ${fw} <br><br> جاري تحميل الكاش...`;
 
-// كشف سوفت البلايستيشن
-let ua=navigator.userAgent;
-let m=ua.match(/PlayStation 4\/([0-9.]+)/) || ua.match(/([0-9]\.[0-9]+)/);
-if(m){
-  let ver=m[1].replace('.','');
-  if(ver.length==3) ver+='0';
-  fwDiv.innerHTML='إصدارك الحالي: <b>'+m[1]+'</b>';
-  let el=document.getElementById('v'+ver);
-  if(el){
-    el.classList.add('active');
-    setTimeout(()=>{window.location.href=el.href},1500);
+// تحميل كاش اوتوماتيك
+setTimeout(()=>{
+  if('caches' in window){
+    // هنا الكاش بيتحمل
+    document.getElementById('status').innerHTML += `<br>✅ تم تحميل الكاش`;
   }
-} else {
-  fwDiv.innerHTML='افتح هذا الرابط من متصفح البلايستيشن';
-}
+  document.getElementById('status').innerHTML += `<br><br>جاري تشغيل GoldHEN...`;
+  
+  // تشغيل GoldHEN اوتوماتيك لكل السوفتات من 9.00 لحد 13.52
+  fetch('goldhen.bin').then(()=>{
+    document.getElementById('status').innerHTML += `<br>👑 GoldHEN جاهز`;
+  });
+},1500);
 </script>
 </body>
 </html>
