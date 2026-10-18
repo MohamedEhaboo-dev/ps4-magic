@@ -2,20 +2,23 @@ CACHE MANIFEST
 
 CACHE:
 index.html
-jb.html
-jb.js
+run_lapse.html
+run_poops.html
+chain_lapse.js
+chain_poops.js
 core.js
 mem.js
 int64.js
 ps4_offsets.js
 rpc_worker.js
-payload2.bin
-goldhen.bin
-patches/1302.bin
-patches/1350.bin
-patches/1352.bin
+payload.bin
+patches/1100.bin
+patches/1150.bin
+patches/1152.bin
+patches/1200.bin
+patches/1250.bin
+patches/1300.bin
 core.js?v=10
-jb.js?v=19
 
 NETWORK:
 *
